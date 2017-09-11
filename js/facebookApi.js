@@ -3,7 +3,7 @@ window.fbAsyncInit = function() {
         appId            : '120623738669748',
         autoLogAppEvents : true,
         xfbml            : true,
-        version          : 'v2.10'
+        version          : 'v2.10',
     });
     FB.AppEvents.logPageView();
     FB.getLoginStatus(function(response) {
@@ -17,7 +17,7 @@ window.fbAsyncInit = function() {
             var uid = response.authResponse.userID;
             var accessToken = response.authResponse.accessToken;
             // console.log(accessToken);
-            //get List of all photos
+            // get List of all photos
             FB.api(
                 '/1659797960957066/photos',
                 'GET',
@@ -25,30 +25,14 @@ window.fbAsyncInit = function() {
                 function(response) {
                     var photos = response.data;
                     console.log(photos);
-                    // var html = "count "+photos.length;
                     var html = "";
                     for(var i=0;i<photos.length;i++) {
                         var images = photos[i]["images"];
-                        // html+= "Photo "+(i+1);
                         html+= '<div class="single_photo col-md-3" style="padding-top: 30px"><img style="max-height: 255px; max-width: 255px" src="'+images[(images.length-1)]["source"]+'" /></div>';
-                        // var tmp = "";
-                        // for(var j = 0 ;j<images.length;j++) {
-                        //     tmp+= '<a href="'+images[j]["source"]+'"> size : '+images[j]["width"]+"X"+images[j]["height"]+'</a><br />';
-                        // }
-                        // html+=tmp+"<hr />";
                     }
                     // console.log(html);
                     document.getElementById("photos").innerHTML = html;
                     // Insert your code here
-                }
-            );
-            FB.api(
-                '/1643984632538399',
-                'GET',
-                {"fields":"ratings"},
-                function(response) {
-                    // Insert your code here
-                    console.log(response);
                 }
             );
         } else if (response.status === 'not_authorized') {
@@ -58,6 +42,16 @@ window.fbAsyncInit = function() {
         } else {
             console.log('fail');
             // the user isn't logged in to Facebook.
+            FB.login(function(response) {
+                if (response.authResponse) {
+                    console.log('Welcome!  Fetching your information.... ');
+                    FB.api('/me', function(response) {
+                        console.log('Good to see you, ' + response.name + '.');
+                    });
+                } else {
+                    console.log('User cancelled login or did not fully authorize.');
+                }
+            });
         }
     });
 };
