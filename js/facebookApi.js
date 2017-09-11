@@ -3,7 +3,7 @@ window.fbAsyncInit = function() {
         appId            : '120623738669748',
         autoLogAppEvents : true,
         xfbml            : true,
-        version          : 'v2.10',
+        version          : 'v2.10'
     });
     FB.AppEvents.logPageView();
     FB.getLoginStatus(function(response) {
